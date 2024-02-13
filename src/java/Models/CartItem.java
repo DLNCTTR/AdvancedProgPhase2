@@ -11,4 +11,27 @@ package Models;
 public class CartItem {
     private Glowstick glowstick;
     private int quantity;
+    
+    public CartItem(Glowstick glowstick, int quantity) {
+        this.glowstick = glowstick;
+        this.quantity = quantity;
+    }
+
+    // Getters and Setters
+    public Glowstick getGlowstick() {
+        return glowstick;
+    }
+
+    public void setGlowstick(Glowstick glowstick) {
+        this.glowstick = glowstick;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
+

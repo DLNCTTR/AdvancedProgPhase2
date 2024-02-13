@@ -32,55 +32,37 @@ import java.io.IOException;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve glowstick cart items from session
-        List<Glowstick> glowstickCart = (List<Glowstick>) request.getSession().getAttribute("glowstickCart");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
 
-        // Forward to JSP for rendering
+        // Example logic to handle adding a glowstick to the cart
+        String action = request.getParameter("action");
+        if ("addToCart".equals(action)) {
+            // Replace with actual logic to retrieve the glowstick based on request parameters
+            GlowsticksDAO glowstickDAO = new GlowsticksDAO();
+            String colour = request.getParameter("colour");
+            String size = request.getParameter("size");
+            Glowstick glowstick = glowstickDAO.getGlowstickByColourAndSize(colour, size);
+
+            if (glowstick != null) {
+                CartItem newItem = new CartItem(glowstick, 1); // Assume 1 quantity for simplicity
+                cart.addItem(newItem);
+            }
+        }
+
+        response.sendRedirect(request.getContextPath() + "/cart");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(request, response);
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Handle add-to-cart logic for glowsticks
-        String colour = request.getParameter("colour");
-        String size = request.getParameter("size");
-
-        // Fetch glowstick details from database using GlowstickDAO
-        GlowsticksDAO glowstickDAO = new GlowsticksDAO();
-        Glowstick glowstick;
-        glowstick = glowstickDAO.getGlowstickByColourAndSize(colour, size);
-
-        // Retrieve glowstick cart from session
-        List<Glowstick> glowstickCart = (List<Glowstick>) request.getSession().getAttribute("glowstickCart");
-
-        // Add glowstick to cart
-        glowstickCart.add(glowstick);
-
-        // Update session attribute
-        request.getSession().setAttribute("glowstickCart", glowstickCart);
-
-        // Redirect back to the glowstick cart page
-        response.sendRedirect(request.getContextPath() + "/cart");
-       // Example: Adding an item to the cart
-    
-       String action = request.getParameter("action");
-      if ("addToCart".equals(action)) {
-     int productId = Integer.parseInt(request.getParameter("productId"));
-    // Retrieve the product based on productId
-    // Add product to cart
-      HttpSession session = request.getSession();
-     Cart cart = (Cart) session.getAttribute("cart");
-     if (cart == null) {
-        cart = new Cart();
-        session.setAttribute("cart", cart);
-    }
-    // Assuming you have a method to find a product by its ID
-    Glowstick product;
-            product = findProductById(glowstickId);
-    if (product != null) {
-        cart.addItem(new CartItem(product, 1)); // Add one item for simplicity
-    }
-    response.sendRedirect("cartPage.jsp"); // Redirect to cart page
 }
 
 

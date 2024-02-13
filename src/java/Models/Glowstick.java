@@ -97,4 +97,8 @@ public class Glowstick {
     public void setType(String type) {
         this.type = type;
     }
+
+    boolean getId() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
