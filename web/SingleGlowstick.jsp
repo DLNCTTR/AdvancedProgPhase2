@@ -57,13 +57,20 @@
                         <div class="d-flex">
                             <button class="btn btn-outline-dark flex-shrink-0" type="button">
                                 <i class="bi-cart-fill me-1"></i>
-                                Add to cart
+                               
+                                <%-- Example of adding to cart form/button in product pages --%>
+<form action="CartServlet" method="post">
+    <input type="hidden" name="action" value="addToCart"/>
+    <input type="hidden" name="productId" value="${product.id}"/>
+    <input type="submit" value="Add to Cart"/>
+</form>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+<%-- Example of adding to cart form/button in product pages --%>
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">

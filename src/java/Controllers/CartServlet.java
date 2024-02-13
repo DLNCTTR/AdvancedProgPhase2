@@ -9,6 +9,7 @@ package Controllers;
  * @author dylan
  */
 import DAO.GlowsticksDAO;
+import Models.Cart;
 import Models.Glowstick;
 import Service.GlowstickService;
 import java.io.IOException;
@@ -22,6 +23,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
 // Place in com.yourapp.controllers.CartServlet.java
 
 // Initialize the cart in a filter or listener or at the start of your servlet
@@ -57,7 +61,30 @@ public class CartServlet extends HttpServlet {
 
         // Redirect back to the glowstick cart page
         response.sendRedirect(request.getContextPath() + "/cart");
+       // Example: Adding an item to the cart
+    
+       String action = request.getParameter("action");
+      if ("addToCart".equals(action)) {
+     int productId = Integer.parseInt(request.getParameter("productId"));
+    // Retrieve the product based on productId
+    // Add product to cart
+      HttpSession session = request.getSession();
+     Cart cart = (Cart) session.getAttribute("cart");
+     if (cart == null) {
+        cart = new Cart();
+        session.setAttribute("cart", cart);
     }
+    // Assuming you have a method to find a product by its ID
+    Glowstick product;
+            product = findProductById(glowstickId);
+    if (product != null) {
+        cart.addItem(new CartItem(product, 1)); // Add one item for simplicity
+    }
+    response.sendRedirect("cartPage.jsp"); // Redirect to cart page
+}
+
+
+    }   
 }
 
 

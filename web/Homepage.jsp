@@ -52,7 +52,12 @@
                 </div>
             </footer>
         </div>
-
+<%-- Example of adding to cart form/button in product pages --%>
+<form action="CartServlet" method="post">
+    <input type="hidden" name="action" value="addToCart"/>
+    <input type="hidden" name="productId" value="${product.id}"/>
+    <input type="submit" value="Add to Cart"/>
+</form>
 
     </body>
 
